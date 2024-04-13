@@ -1,0 +1,33 @@
+
+.content{
+
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #f00;
+  width: 98.8vw;
+
+}
+.cont-grid{
+
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+  padding: 10px;
+  
+}
+.cont-books{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+
+}
+.grid-item{
+ width: 100%;
+  height: 80%;
+}
+
+.info-book{
+  border: 1px solid #00f;
+  width: 100%;
+  height: 19%;
+}
