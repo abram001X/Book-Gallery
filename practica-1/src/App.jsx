@@ -5,40 +5,59 @@ import { BookGallery } from "./components/BookGallery";
 import { Menu } from "./components/Menu";
 
 function App() {
-  const book = result.library.map((data) => ({ ...data.book, bolean: true }));
+  const book = result.library.map((data) => ({
+    title: data.book.title,
+    pages: data.book.pages,
+    genre: data.book.cover,
+    synopsis: data.book.synopsis,
+    year: data.book.year,
+    ISBN: data.book.ISBN,
+    author: data.book.author,
+    bolean: true,
+  }));
   const [books, setBooks] = useState(book);
   const [booksSave, setBooksSave] = useState(book); //book seguro
-
   
   let countBookGenre = 0;
   let bookAvailable = 0;
   let bookNoAvailable = 0;
+  // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
-//Guardar los valores en localStorage
-useEffect(()=>{
-  let data = window.localStorage.getItem("Books")
-  if(data){
-    setBooksSave(JSON.parse(data)),
-    setBooks(JSON.parse(data))
-  }
-},[])
+  const handleSearch = (event) => {
 
-useEffect(()=>{
-  window.localStorage.setItem("Books", JSON.stringify(booksSave))
-},[booksSave])
+    setBooks(booksSave.filter(book=> book.title.startsWith(event)))
+  };
+  //Cambiar el localStorage para reflejarlo en otra pestaña al instante
+  addEventListener("storage", (e) => {
+    if (e.key == "Books") {
+      setBooksSave(JSON.parse(e.newValue));
+      setBooks(JSON.parse(e.newValue));
+    }
+  });
 
-//contar cuantos true tienen los libros
-booksSave.map((book) => {
-  if (book.bolean) {
-    bookAvailable++;
-  } else {
-    bookNoAvailable++;
-  }
-});
+  //Guardar los valores en localStorage
+  useEffect(() => {
+    let data = window.localStorage.getItem("Books");
+    if (data) {
+      setBooksSave(JSON.parse(data)), setBooks(JSON.parse(data));
+    }
+  }, []);
 
+  useEffect(() => {
+    window.localStorage.setItem("Books", JSON.stringify(booksSave));
+  }, [booksSave]);
 
-  books.map(()=> {
-      countBookGenre++;
+  //contar cuantos true tienen los libros
+  booksSave.map((book) => {
+    if (book.bolean) {
+      bookAvailable++;
+    } else {
+      bookNoAvailable++;
+    }
+  });
+
+  books.map(() => {
+    countBookGenre++;
   });
 
   // Detectar cuales libros están disponibles o no para leer
@@ -66,7 +85,6 @@ booksSave.map((book) => {
     );
   };
 
-
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
     const books2 = booksSave;
@@ -86,6 +104,7 @@ booksSave.map((book) => {
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
         countBookGenre={countBookGenre}
+        handleSearch={handleSearch}
       />
       <BookGallery books={books} bookLearn={bookLearn} />
     </div>

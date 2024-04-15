@@ -1,12 +1,15 @@
+
+
 //Menú de filtrados, categorias etc
 
 // eslint-disable-next-line react/prop-types
-export function Menu({ booksFilter, bookAvailable, bookNoAvailable, countBookGenre }) {
+export function Menu({ booksFilter, bookAvailable, bookNoAvailable, countBookGenre,handleSearch }) {
 
   return (
     <menu className="menu">
       <h1>BookGallery</h1>
       <div className="cont-filter">
+        <input type="search" placeholder="🔍 Búscar Libro" onChange={e=>{handleSearch(e.target.value)}}/>
         <select
           name="Géneros"
           id=""
