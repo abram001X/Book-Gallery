@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import result from "./books.json";
 import { BookGallery } from "./components/BookGallery";
@@ -15,17 +15,27 @@ function App() {
   let bookNoAvailable = 0;
 
 //Guardar los valores en localStorage
+useEffect(()=>{
+  let data = window.localStorage.getItem("Books")
+  if(data){
+    setBooksSave(JSON.parse(data)),
+    setBooks(JSON.parse(data))
+  }
+},[])
 
-
+useEffect(()=>{
+  window.localStorage.setItem("Books", JSON.stringify(booksSave))
+},[booksSave])
 
 //contar cuantos true tienen los libros
-  booksSave.map((book) => {
-    if (book.bolean) {
-      bookAvailable++;
-    } else {
-      bookNoAvailable++;
-    }
-  });
+booksSave.map((book) => {
+  if (book.bolean) {
+    bookAvailable++;
+  } else {
+    bookNoAvailable++;
+  }
+});
+
 
   books.map(()=> {
       countBookGenre++;
