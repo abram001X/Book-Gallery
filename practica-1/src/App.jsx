@@ -1,38 +1,68 @@
 import { useRef, useState } from "react";
 import "./App.css";
 import result from "./books.json";
+import { BookGallery } from "./components/BookGallery";
+import { Menu } from "./components/Menu";
+ // Crear galeria de libros
+
 
 function App() {
-  const book = result.library.map((data) => ({...data.book, bolean: true }));
+  const book = result.library.map((data) => ({ ...data.book, bolean: true }));
   const [books, setBooks] = useState(book);
-  console.log(book)
+  //book seguro 
+  const  [booksSave,setBooksSave] = useState(book);
+  const counter = useRef(0);
+  
+  booksSave.map(book=>{
+    if(book.bolean){
+      counter.current++
+    }
+  })
+
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
-    setBooks(books.map(book => {
+
+    
+    setBooksSave(booksSave.map( book=>{
       if (book.ISBN === selectedISBN) {
-        return {...book, bolean: false };
+        return book.bolean
+          ? { ...book, bolean: false }
+          : { ...book, bolean: true };
       }
-      return book;
-    }));
+      return { ...book };
+    }))
+
+    setBooks(
+      books.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return book.bolean
+            ? { ...book, bolean: false }
+            : { ...book, bolean: true };
+        }
+        return { ...book };
+      })
+    );
+    console.log(counter)
+  };
+
+  //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
+  
+  const booksFilter = genre =>{
+    const books2 = booksSave;
+    if(genre == "Todos"){
+      return setBooks(books2)
+    }
+
+    return setBooks(books2.filter(book => book.genre == genre))
+   
   }
 
-  // Crear galeria de libros
-  function BookGallery() {
-    return <section className="cont-grid">
-    {books.map((book) => {
-      return (
-          <div className="cont-books" key={book.ISBN}>
-            <img src={book.cover} className="grid-item" alt={book.title} />
-            <article className="info-book">
-              <button onClick={() => bookLearn(book.ISBN)}>{book.bolean ? "Leer" : "Leído"}</button>
-            </article>
-          </div>
-      );
-    })}
-    </section>
-  }
-
-  return <div className="content">{BookGallery()}</div>;
+ return ( 
+  <div className="content">
+    <Menu books={books} booksFilter={booksFilter}/>
+    <BookGallery books={books} bookLearn={bookLearn}/>
+    
+  </div>)
 }
 
 export default App;
