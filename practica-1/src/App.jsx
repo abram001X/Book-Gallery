@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import "./App.css";
 import result from "./books.json";
 import { BookGallery } from "./components/BookGallery";
@@ -21,10 +21,17 @@ function App() {
   let countBookGenre = 0;
   let bookAvailable = 0;
   let bookNoAvailable = 0;
+
+
+
+  //Filtrar libros por paginas
+  const pageFilter = (event)=>{
+    setBooks(booksSave.filter(book => book.pages >= event))
+  }
+
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
   const handleSearch = (event) => {
-
     setBooks(booksSave.filter(book=> book.title.startsWith(event)))
   };
   //Cambiar el localStorage para reflejarlo en otra pestaña al instante
@@ -99,14 +106,14 @@ function App() {
   return (
     <div className="content">
       <Menu
-        books={books}
+        pageFilter={pageFilter}
         booksFilter={booksFilter}
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
-        countBookGenre={countBookGenre}
         handleSearch={handleSearch}
       />
-      <BookGallery books={books} bookLearn={bookLearn} />
+      
+      <BookGallery books={books} bookLearn={bookLearn} countBookGenre={countBookGenre} />
     </div>
   );
 }
