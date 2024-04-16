@@ -21,12 +21,20 @@ function App() {
   let countBookGenre = 0;
   let bookAvailable = 0;
   let bookNoAvailable = 0;
+  //Mostrar la  info de los libros
 
+  const bookSynopsis = (synopsis)=>{
+
+    
+  }
 
 
   //Filtrar libros por paginas
   const pageFilter = (event)=>{
+
+    
     setBooks(booksSave.filter(book => book.pages >= event))
+
   }
 
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
@@ -94,13 +102,10 @@ function App() {
 
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
-    const books2 = booksSave;
-
     if (genre == "Todos") {
-      return setBooks(books2);
+      return setBooks(booksSave);
     }
-
-    setBooks(books2.filter((book) => book.genre == genre));
+    setBooks(booksSave.filter((book) => book.genre == genre));
   };
 
   return (
@@ -113,7 +118,7 @@ function App() {
         handleSearch={handleSearch}
       />
       
-      <BookGallery books={books} bookLearn={bookLearn} countBookGenre={countBookGenre} />
+      <BookGallery books={books} bookLearn={bookLearn} countBookGenre={countBookGenre} bookSynopsis={bookSynopsis} />
     </div>
   );
 }

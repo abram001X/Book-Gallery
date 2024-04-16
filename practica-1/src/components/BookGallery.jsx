@@ -1,11 +1,22 @@
 /* eslint-disable react/prop-types */
-import { GoBookmarkFill } from "react-icons/go";  
+import { useState } from "react";
+import { GoBookmarkFill } from "react-icons/go";
 import { GoBookmarkSlashFill } from "react-icons/go";
 
 // eslint-disable-next-line react/prop-types
 //Galería de libros
 
-export function BookGallery({ books, bookLearn, countBookGenre }) {
+export function BookGallery({
+  books,
+  bookLearn,
+  countBookGenre,
+  bookSynopsis,
+}) {
+  const [hovered, setHovered] = useState(false);
+
+
+
+  
   return (
     <div className="cont-gallery">
       <p
@@ -17,14 +28,23 @@ export function BookGallery({ books, bookLearn, countBookGenre }) {
       <section className="cont-grid">
         {books.map((book) => {
           return (
-            <div className="cont-books" key={book.ISBN}>
+            <div
+              onMouseEnter={() => {
+                setHovered(true);
+              }}
+              onMouseLeave={() => {
+                setHovered(false);
+              }}
+              className="cont-books"
+              key={book.ISBN}
+            >
               {book.bolean ? (
-                <GoBookmarkFill 
+                <GoBookmarkFill
                   onClick={() => bookLearn(book.ISBN)}
                   className="cono"
                 />
               ) : (
-                <GoBookmarkSlashFill 
+                <GoBookmarkSlashFill
                   onClick={() => bookLearn(book.ISBN)}
                   className="cono"
                 />
@@ -33,10 +53,18 @@ export function BookGallery({ books, bookLearn, countBookGenre }) {
                 src={book.cover}
                 className="img-grid-item"
                 alt={book.title}
+                onClick={() => {
+                  bookSynopsis(book.synopsis);
+                }}
               />
+
               <article className="info-book">
-                <p>
-                  Title : <span style={{ color: "#888" }}>{book.title}</span>
+                <p>{book.title}</p>
+                <p className={hovered ? "info-books-hover" : "info-books"}>
+                  Sinopsis : <br /> <span>{book.synopsis}</span>
+                </p>
+                <p className={hovered ? "info-books-hover" : "info-books"}>
+                  Autor : <br /> <span>{book.author.name}</span>
                 </p>
               </article>
             </div>
