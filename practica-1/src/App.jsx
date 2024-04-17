@@ -1,4 +1,4 @@
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import result from "./books.json";
 import { BookGallery } from "./components/BookGallery";
@@ -7,6 +7,7 @@ import { Menu } from "./components/Menu";
 function App() {
   const book = result.library.map((data) => ({
     title: data.book.title,
+    hover: true,
     pages: data.book.pages,
     genre: data.book.cover,
     synopsis: data.book.synopsis,
@@ -17,30 +18,34 @@ function App() {
   }));
   const [books, setBooks] = useState(book);
   const [booksSave, setBooksSave] = useState(book); //book seguro
-  
+
   let countBookGenre = 0;
   let bookAvailable = 0;
   let bookNoAvailable = 0;
   //Mostrar la  info de los libros
 
-  const bookSynopsis = (synopsis)=>{
-
-    
-  }
-
+  const handleHover = (id) => {
+    setBooks(
+      books.map((book) => {
+        if (book.ISBN === id) {
+          return book.hover
+            ? { ...book, hover: false }
+            : { ...book, hover: true };
+        }
+        return { ...book };
+      })
+    );
+  };
 
   //Filtrar libros por paginas
-  const pageFilter = (event)=>{
-
-    
-    setBooks(booksSave.filter(book => book.pages >= event))
-
-  }
+  const pageFilter = (event) => {
+    setBooks(booksSave.filter((book) => book.pages >= event));
+  };
 
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
   const handleSearch = (event) => {
-    setBooks(booksSave.filter(book=> book.title.startsWith(event)))
+    setBooks(booksSave.filter((book) => book.title.startsWith(event)));
   };
   //Cambiar el localStorage para reflejarlo en otra pestaña al instante
   addEventListener("storage", (e) => {
@@ -117,8 +122,13 @@ function App() {
         bookNoAvailable={bookNoAvailable}
         handleSearch={handleSearch}
       />
-      
-      <BookGallery books={books} bookLearn={bookLearn} countBookGenre={countBookGenre} bookSynopsis={bookSynopsis} />
+
+      <BookGallery
+        books={books}
+        bookLearn={bookLearn}
+        countBookGenre={countBookGenre}
+        handleHover={handleHover}
+      />
     </div>
   );
 }

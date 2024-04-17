@@ -10,12 +10,8 @@ export function BookGallery({
   books,
   bookLearn,
   countBookGenre,
-  bookSynopsis,
+  handleHover,
 }) {
-  const [hovered, setHovered] = useState(false);
-
-
-
   
   return (
     <div className="cont-gallery">
@@ -29,12 +25,7 @@ export function BookGallery({
         {books.map((book) => {
           return (
             <div
-              onMouseEnter={() => {
-                setHovered(true);
-              }}
-              onMouseLeave={() => {
-                setHovered(false);
-              }}
+              
               className="cont-books"
               key={book.ISBN}
             >
@@ -53,17 +44,22 @@ export function BookGallery({
                 src={book.cover}
                 className="img-grid-item"
                 alt={book.title}
-                onClick={() => {
-                  bookSynopsis(book.synopsis);
-                }}
+                onMouseEnter={() => {
+                handleHover(book.ISBN);
+              }}
+              onMouseLeave={() => {
+                handleHover(book.ISBN);
+              }}
+    
+                
               />
 
               <article className="info-book">
                 <p>{book.title}</p>
-                <p className={hovered ? "info-books-hover" : "info-books"}>
+                <p className={book.hover ? "info-books-hover" : "info-books"}>
                   Sinopsis : <br /> <span>{book.synopsis}</span>
                 </p>
-                <p className={hovered ? "info-books-hover" : "info-books"}>
+                <p className={book.hover ? "info-books-hover" : "info-books"}>
                   Autor : <br /> <span>{book.author.name}</span>
                 </p>
               </article>
