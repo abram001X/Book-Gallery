@@ -14,15 +14,22 @@ export function Menu({
   bookNoAvailable,
   handleSearch,
   books,
-  bookLearn
+  bookLearn,
 }) {
   const [pages, setPages] = useState();
   const pagesPar = (event) => {
     setPages(event);
   };
+  
   return (
     <div className="menu">
-      <h1><BsJournalBookmark className="icon" style={{"color" : "#0090ff","transform" : "translateY(3px)"}}/>BookGallery</h1>
+      <h1>
+        <BsJournalBookmark
+          className="icon"
+          style={{ color: "#0090ff", transform: "translateY(3px)" }}
+        />
+        BookGallery
+      </h1>
       <div className="cont-filter">
         <input
           className="search"
@@ -75,16 +82,16 @@ export function Menu({
         </section>
       </div>
       <p className="libros-leidos">
-            <FaRegStar className="icon" /> Libros leídos :{" "}
-            <span>{bookNoAvailable}</span>
+        <FaRegStar className="icon" /> Libros leídos :{" "}
+        <span>{bookNoAvailable}</span>
       </p>
-     <div className="book-read">
-     {books.map(book =>{
-        return(
-          book.bolean ? null : <img src={book.cover} alt="" onClick={()=> bookLearn(book.ISBN)}/>  
-        )
-      })}
-      </div> 
+      <div className="book-read">
+        {books.map((book) => {
+          return book.bolean ? null : (
+            <img src={book.cover} alt="" onClick={() => bookLearn(book.ISBN)} />
+          );
+        })}
+      </div>
     </div>
   );
 }

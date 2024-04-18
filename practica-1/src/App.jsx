@@ -4,6 +4,7 @@ import result from "./books.json";
 import { BookGallery } from "./components/BookGallery";
 import { Menu } from "./components/Menu";
 
+  
 function App() {
   const book = result.library.map((data) => ({
     title: data.book.title,
@@ -16,7 +17,7 @@ function App() {
     bolean: true,
   }));
   const [books, setBooks] = useState(book);
-  const [booksSave, setBooksSave] = useState(book); //book seguro
+  const [booksSave, setBooksSave] = useState(book);
   let bookAvailable = 0;
   let bookNoAvailable = 0;
 
@@ -107,13 +108,10 @@ function App() {
         bookLearn={bookLearn}
       />
 
-      <BookGallery
-        books={books}
-        bookLearn={bookLearn}
-      />
+      <BookGallery books={books} bookLearn={bookLearn} />
       <footer className="footer">
-          <p>© 2024 AbrahamAlfonzo</p>
-          <p>abrahamalfonzo11@gmail.com</p>
+        <p>© 2024 AbrahamAlfonzo</p>
+        <p>abrahamalfonzo11@gmail.com</p>
       </footer>
     </div>
   );

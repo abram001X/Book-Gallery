@@ -12,7 +12,7 @@ body {
 .cont-grid {
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 }
 .cont-books {
   display: flex;
@@ -44,7 +44,7 @@ body {
   cursor: pointer;
 }
 .menu {
-  width: 17%;
+  width: 20%;
   height: 200%;
   display: flex;
   flex-direction: column;
@@ -113,7 +113,7 @@ body {
 }
 
 .cont-gallery {
-  width: 80%;
+  width: 79%;
   height: 100%;
   padding: 10px;
   padding-top: 0;
@@ -167,3 +167,6 @@ p {
   font-size: 13px;
   color: #666;
 }
+
+
+

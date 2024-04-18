@@ -6,7 +6,7 @@ import { GoBookmarkSlashFill } from "react-icons/go";
 // eslint-disable-next-line react/prop-types
 //Galería de libros
 
-export function BookGallery({ books, bookLearn}) {
+export function BookGallery({ books, bookLearn }) {
   return (
     <div className="cont-gallery">
       <section className="cont-grid">
@@ -22,7 +22,6 @@ export function BookGallery({ books, bookLearn}) {
                 <GoBookmarkSlashFill
                   onClick={() => bookLearn(book.ISBN)}
                   className="cono"
-          
                 />
               )}
               <img
@@ -31,8 +30,11 @@ export function BookGallery({ books, bookLearn}) {
                 alt={book.title}
               />
               <article className="info-book">
-                <p style={{"color" : "#ffff","fontWeight" : "700"}}> {book.title}</p>
-                <p >
+                <p style={{ color: "#ffff", fontWeight: "700" }}>
+                  {" "}
+                  {book.title}
+                </p>
+                <p>
                   <span>{book.synopsis}</span>
                 </p>
                 <p className="p_info-book">
