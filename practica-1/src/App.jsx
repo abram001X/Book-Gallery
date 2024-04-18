@@ -7,7 +7,6 @@ import { Menu } from "./components/Menu";
 function App() {
   const book = result.library.map((data) => ({
     title: data.book.title,
-    hover: true,
     pages: data.book.pages,
     genre: data.book.cover,
     synopsis: data.book.synopsis,
@@ -18,24 +17,8 @@ function App() {
   }));
   const [books, setBooks] = useState(book);
   const [booksSave, setBooksSave] = useState(book); //book seguro
-
-  let countBookGenre = 0;
   let bookAvailable = 0;
   let bookNoAvailable = 0;
-  //Mostrar la  info de los libros
-
-  const handleHover = (id) => {
-    setBooks(
-      books.map((book) => {
-        if (book.ISBN === id) {
-          return book.hover
-            ? { ...book, hover: false }
-            : { ...book, hover: true };
-        }
-        return { ...book };
-      })
-    );
-  };
 
   //Filtrar libros por paginas
   const pageFilter = (event) => {
@@ -45,7 +28,11 @@ function App() {
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
   const handleSearch = (event) => {
-    setBooks(booksSave.filter((book) => book.title.startsWith(event)));
+    setBooks(
+      booksSave.filter((book) =>
+        book.title.toLowerCase().startsWith(event.toLowerCase())
+      )
+    );
   };
   //Cambiar el localStorage para reflejarlo en otra pestaña al instante
   addEventListener("storage", (e) => {
@@ -75,11 +62,6 @@ function App() {
       bookNoAvailable++;
     }
   });
-
-  books.map(() => {
-    countBookGenre++;
-  });
-
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
     setBooksSave(
@@ -121,14 +103,18 @@ function App() {
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
         handleSearch={handleSearch}
+        books={books}
+        bookLearn={bookLearn}
       />
 
       <BookGallery
         books={books}
         bookLearn={bookLearn}
-        countBookGenre={countBookGenre}
-        handleHover={handleHover}
       />
+      <footer className="footer">
+          <p>© 2024 AbrahamAlfonzo</p>
+          <p>abrahamalfonzo11@gmail.com</p>
+      </footer>
     </div>
   );
 }

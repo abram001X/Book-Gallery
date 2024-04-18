@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 //Menú de filtrados, categorias etc
 import { IoBookOutline } from "react-icons/io5";
 import { useState } from "react";
 import { IoMoonOutline } from "react-icons/io5";
 import { LuBookDown } from "react-icons/lu";
 import { FaRegStar } from "react-icons/fa6";
+import { BsJournalBookmark } from "react-icons/bs";
 // eslint-disable-next-line react/prop-types
 export function Menu({
   pageFilter,
@@ -11,6 +13,8 @@ export function Menu({
   bookAvailable,
   bookNoAvailable,
   handleSearch,
+  books,
+  bookLearn
 }) {
   const [pages, setPages] = useState();
   const pagesPar = (event) => {
@@ -18,7 +22,7 @@ export function Menu({
   };
   return (
     <div className="menu">
-      <h1>BookGallery</h1>
+      <h1><BsJournalBookmark className="icon" style={{"color" : "#0090ff","transform" : "translateY(3px)"}}/>BookGallery</h1>
       <div className="cont-filter">
         <input
           className="search"
@@ -68,12 +72,19 @@ export function Menu({
             <LuBookDown className="icon" /> Libros <br />
             disponibles : <span>{bookAvailable}</span>
           </p>
-          <p>
-            <FaRegStar className="icon" /> Libros leídos :{" "}
-            <span>{bookNoAvailable}</span>
-          </p>
         </section>
       </div>
+      <p className="libros-leidos">
+            <FaRegStar className="icon" /> Libros leídos :{" "}
+            <span>{bookNoAvailable}</span>
+      </p>
+     <div className="book-read">
+     {books.map(book =>{
+        return(
+          book.bolean ? null : <img src={book.cover} alt="" onClick={()=> bookLearn(book.ISBN)}/>  
+        )
+      })}
+      </div> 
     </div>
   );
 }
