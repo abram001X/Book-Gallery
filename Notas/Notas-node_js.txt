@@ -1,0 +1,30 @@
+esto con common moduls
+archivo.js
+module exports: 
+//Exporta una variable de un archivo
+module.exports = sum
+
+importar un avariable desde otro archivo:
+const suma = require(`./sum`)
+
+console.log(suma)
+----------------------------
+con archivo.mjs
+se exporta como en javascript
+------------------
+
+res.json({"json"}): Muestra  el json en el navegador sin necesidad de pasarlo a string
+
+res.sendFile(./): Muestra el archivo en el  navegador 
+
+{
+    root: __dirname : indica la  ruta absoluta (para los html, imagenes etc..)
+}
+
+app.use(express.text()): de esta manera express puede procesar el texto que le envian las peticiones cliente
+
+app.all() : funciona con todos  los  metodos
+
+morgan : es una biblioteca que nos da información del server
+Ejemplo:
+app.use(morgan())
