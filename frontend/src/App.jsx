@@ -1,24 +1,43 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import result from './books.json';
 import { BookGallery } from './components/BookGallery.jsx';
 import { Menu } from './components/Menu.jsx';
 
-const URI = 'http://localhost:3000'
-
 function App() {
-  const [book, setBook] = useState(result.library.map((data) => ({
-    title: data.book.title,
-    pages: data.book.pages,
-    genre: data.book.genre,
-    cover: data.book.cover,
-    synopsis: data.book.synopsis,
-    year: data.book.year,
-    ISBN: data.book.ISBN,
-    author: data.book.author,
-    bolean: true
-  })))
-  const [books, setBooks] = useState(book);
+  
+  const [result, setResult] = useState({})
+  const [book, setBook] = useState([])
+  const [books, setBooks] = useState(book)
+ 
+  
+  useEffect(()  => {
+    fetchData()
+  },[])
+
+  const fetchData = async()=>{
+    const res = await fetch('http://localhost:3000')
+    const data = await res.json()
+   setResult(data)
+  }
+
+  useEffect(()=> {
+    if (result.library){
+      setBook(result.library.map((data) => ({
+        title: data.book.title,
+        pages: data.book.pages,
+        genre: data.book.genre,
+        cover: data.book.cover,
+        synopsis: data.book.synopsis,
+        year: data.book.year,
+        ISBN: data.book.ISBN,
+        author: data.book.author,
+        bolean: true
+      })))
+    }
+  },[result])
+
+  
+
   let bookAvailable = 0;
   let bookNoAvailable = 0;
 
@@ -50,6 +69,7 @@ function App() {
     if (data) {
       setBook(JSON.parse(data)), setBooks(JSON.parse(data));
     }
+
   }, []);
 
   useEffect(() => {
@@ -66,6 +86,17 @@ function App() {
   });
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
+    setBook(
+      book.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return book.bolean
+            ? { ...book, bolean: false }
+            : { ...book, bolean: true };
+        }
+        return { ...book };
+      })
+    )
+
     setBooks(
       books.map((book) => {
         if (book.ISBN === selectedISBN) {
@@ -76,8 +107,7 @@ function App() {
         return { ...book };
       })
     );
-  };
-
+  };    
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
     console.log(genre);
@@ -103,7 +133,7 @@ function App() {
       <footer className="footer">
         <p>© 2024 AbrahamAlfonzo</p>
         <p>abrahamalfonzo11@gmail.com</p>
-      </footer>
+      </footer> 
     </div>
   );
 }
