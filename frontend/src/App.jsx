@@ -1,24 +1,43 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import result from './books.json';
 import { BookGallery } from './components/BookGallery.jsx';
 import { Menu } from './components/Menu.jsx';
 
-const URI = 'http://localhost:3000'
-
 function App() {
-  const [book, setBook] = useState(result.library.map((data) => ({
-    title: data.book.title,
-    pages: data.book.pages,
-    genre: data.book.genre,
-    cover: data.book.cover,
-    synopsis: data.book.synopsis,
-    year: data.book.year,
-    ISBN: data.book.ISBN,
-    author: data.book.author,
-    bolean: true
-  })))
+  const [result, setResult] = useState({});
+  const [book, setBook] = useState([]);
   const [books, setBooks] = useState(book);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const res = await fetch('http://localhost:3000');
+    const data = await res.json();
+    setResult(data);
+  };
+  
+  useEffect(() => {
+    if (result.library) {
+      setBook(
+        result.library.map((data) => ({
+          title: data.book.title,
+          pages: data.book.pages,
+          genre: data.book.genre,
+          cover: data.book.cover,
+          synopsis: data.book.synopsis,
+          year: data.book.year,
+          ISBN: data.book.ISBN,
+          author: data.book.author,
+          bolean: true
+        }))
+      );
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  
   let bookAvailable = 0;
   let bookNoAvailable = 0;
 
@@ -66,8 +85,18 @@ function App() {
   });
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
+    setBook(
+      book.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return book.bolean
+            ? { ...book, bolean: false }
+            : { ...book, bolean: true };
+        }
+        return { ...book };
+      })
+    )
     setBooks(
-      books.map((book) => {
+      book.map((book) => {
         if (book.ISBN === selectedISBN) {
           return book.bolean
             ? { ...book, bolean: false }
