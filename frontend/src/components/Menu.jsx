@@ -14,12 +14,15 @@ export function Menu({
   bookNoAvailable,
   handleSearch,
   books,
-  bookLearn
+  bookLearn,
+  drag,
+  handleDrop
 }) {
   const [pages, setPages] = useState();
   const pagesPar = (event) => {
     setPages(event);
   };
+  const [styleDrag, setStyleDrag] = useState(false);
 
   return (
     <div className="menu">
@@ -27,8 +30,7 @@ export function Menu({
         <BsJournalBookmark
           className="icon"
           style={{ color: '#0090ff', transform: 'translateY(3px)' }}
-        />
-        BookGallery
+        /> BookGallery
       </h1>
       <div className="cont-filter">
         <input
@@ -50,13 +52,13 @@ export function Menu({
               pageFilter(e.target.value);
               pagesPar(e.target.value);
             }}
-            style={{ width: '100px', marginTop: '10px', marginRight: '10px' }}
+            style={{ width: '70%', marginTop: '20px' }}
           />{' '}
           <label style={{ fontSize: '14px', color: '#999' }}> {pages} </label>
         </section>
         <section className="cont-select-menu">
           <p>
-            <IoMoonOutline className="icon" /> Elige un género :{' '}
+            <IoMoonOutline className="icon" /> Elige un género {' '}
           </p>
           <select
             name="Géneros"
@@ -70,8 +72,9 @@ export function Menu({
             <option value="Terror">Terror</option>
             <option value="Zombies">Zombies</option>
           </select>
+          <br />
           <p>
-            <LuBookDown className="icon" /> Libros <br />
+            <LuBookDown className="icon" /> Libros
             disponibles : <span>{bookAvailable}</span>
           </p>
         </section>
@@ -80,7 +83,21 @@ export function Menu({
         <FaRegStar className="icon" /> Libros leídos :{' '}
         <span>{bookNoAvailable}</span>
       </p>
-      <div className="book-read">
+      <br />
+      <b className="b-menu">(Arrastra un libro)</b>
+      <br />
+      <div
+        className={`book-read ${styleDrag ? 'active-drag' : ''}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setStyleDrag(true);
+        }}
+        onDrop={() => {
+          handleDrop(drag);
+          setStyleDrag(false)
+        }}
+        onDragLeave={()=>setStyleDrag(false)}
+      >
         {books.map((book) => {
           return book.bolean ? null : (
             <img
