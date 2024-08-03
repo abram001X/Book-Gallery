@@ -4,25 +4,18 @@ import { BookGallery } from './components/BookGallery.jsx';
 import { Menu } from './components/Menu.jsx';
 
 function App() {
-  
-  const [result, setResult] = useState({})
-  const [book, setBook] = useState([])
-  const [books, setBooks] = useState(book)
- 
-  
-  useEffect(()  => {
-    fetchData()
-  },[])
+  const [book, setBook] = useState([]);
+  const [books, setBooks] = useState();
 
-  const fetchData = async()=>{
-    const res = await fetch('http://localhost:3000')
-    const data = await res.json()
-   setResult(data)
-  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  useEffect(()=> {
-    if (result.library){
-      setBook(result.library.map((data) => ({
+  const fetchData = async () => {
+    const res = await fetch('http://localhost:3000');
+    const data = await res.json();
+    setBook(
+      data.library.map((data) => ({
         title: data.book.title,
         pages: data.book.pages,
         genre: data.book.genre,
@@ -32,10 +25,10 @@ function App() {
         ISBN: data.book.ISBN,
         author: data.book.author,
         bolean: true
-      })))
-    }
-  },[result])
-
+      }))
+    );
+  };
+  console.log(book)
   
 
   let bookAvailable = 0;
@@ -69,7 +62,6 @@ function App() {
     if (data) {
       setBook(JSON.parse(data)), setBooks(JSON.parse(data));
     }
-
   }, []);
 
   useEffect(() => {
@@ -77,13 +69,15 @@ function App() {
   }, [book]);
 
   //contar cuantos true tienen los libros
-  books.map((book) => {
+  if (books){
+    books.map((book) => {
     if (book.bolean) {
       bookAvailable++;
     } else {
       bookNoAvailable++;
     }
   });
+}
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
     setBook(
@@ -95,10 +89,10 @@ function App() {
         }
         return { ...book };
       })
-    )
+    );
 
     setBooks(
-      book.map((book) => {
+      books.map((book) => {
         if (book.ISBN === selectedISBN) {
           return book.bolean
             ? { ...book, bolean: false }
@@ -107,10 +101,10 @@ function App() {
         return { ...book };
       })
     );
-  };    
+  };
+
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
-    console.log(genre);
     if (genre == 'Todos') {
       return setBooks(book);
     }
@@ -125,15 +119,15 @@ function App() {
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
         handleSearch={handleSearch}
-        books={books}
+        books={books ? books : book}
         bookLearn={bookLearn}
       />
 
-      <BookGallery books={books} bookLearn={bookLearn} />
+      <BookGallery books={books ? books : book} bookLearn={bookLearn} />
       <footer className="footer">
         <p>© 2024 AbrahamAlfonzo</p>
         <p>abrahamalfonzo11@gmail.com</p>
-      </footer> 
+      </footer>
     </div>
   );
 }
