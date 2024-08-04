@@ -3,8 +3,7 @@ const cors = require('cors')
 const path = require('path')
 const app = express()
 const fs = require('node:fs')
-const PORT = require('./config')
-const FRONTEND_URL = require('./config')
+const { PORT, FRONTEND_URL } = require('./config')
 const api = path.join(__dirname, 'json', 'books.json')
 
 app.use(
