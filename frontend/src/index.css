@@ -11,6 +11,7 @@ body {
 }
 .cont-grid {
   height: 100%;
+  width: 100%;
   display: grid;
   place-content: center;
   grid-template-columns: repeat(auto-fit, minmax(216px, 260px));
@@ -123,6 +124,8 @@ body {
 .cont-gallery {
   width: 80%;
   height: 100%;
+  display: flex;
+  justify-content: center;
 }
 .libros-disponibles {
   font-size: 25px;
@@ -238,8 +241,75 @@ p {
  color: #aa0080;
 }
 
+@media screen and (min-width: 950px) and (max-width:1140px){
+  .cont-grid{
+    width: 100%;
+  }
+  .cont-gallery{
+    width: 75%;
+  }
+  .menu{
+    width: 25%;
+  }
+}
+@media screen and (min-width: 300px) and (max-width:950px){
+  .cont-gallery{
+    width: 60%;
+  }
+  .menu{
+    width: 40%;
+  }
+  .cont_details-child{
+    width: 500px;
+  }
+  .p-details{
+    width: 20ch;
+  }
+  .icon_detail{
+    transform: translateX(260px);
+  }
+}
+@media screen and (min-width: 100px) and (max-width:650px){
+  .content{
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+  .cont-gallery{
+    width: 100%;
 
-
+  }
+  .menu{
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .book-read{
+    display: none;
+  }
+  .p-none{
+    display: none;
+  }
+  .query-h1{
+    width: 100%;
+  }
+  .cont_details-child{
+    width: 400px;
+  }
+  .p-details{
+    width: 20ch;
+    font-size: 15px;
+  }
+  .cont_img-details{
+    height: 50%;
+  }
+  .cont_info-details{
+    width: 50%;
+  }
+  .icon_detail{
+    transform: translateY(-40px);
+    margin-left: 20px;
+  }
+}
 
 
 

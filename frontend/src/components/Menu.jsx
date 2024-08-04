@@ -26,7 +26,7 @@ export function Menu({
 
   return (
     <div className="menu">
-      <h1>
+      <h1  className='query-h1'>
         <BsJournalBookmark
           className="icon"
           style={{ color: '#0090ff', transform: 'translateY(3px)' }}
@@ -73,18 +73,18 @@ export function Menu({
             <option value="Zombies">Zombies</option>
           </select>
           <br />
-          <p>
+          <p >
             <LuBookDown className="icon" /> Libros
-            disponibles : <span>{bookAvailable}</span>
+            disponibles : <span >{bookAvailable}</span>
           </p>
         </section>
       </div>
-      <p className="libros-leidos">
+      <p className="libros-leidos p-none">
         <FaRegStar className="icon" /> Libros leídos :{' '}
         <span>{bookNoAvailable}</span>
       </p>
       <br />
-      <b className="b-menu">(Arrastra un libro)</b>
+      <b className="b-menu p-none">(Arrastra un libro)</b>
       <br />
       <div
         className={`book-read ${styleDrag ? 'active-drag' : ''}`}
