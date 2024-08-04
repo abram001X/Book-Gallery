@@ -4,9 +4,14 @@ const path = require('path')
 const app = express()
 const fs = require('node:fs')
 const PORT = require('./config')
+const FRONTEND_URL = require('./config')
 const api = path.join(__dirname, 'json', 'books.json')
 
-app.use(cors())
+app.use(
+  cors({
+    origin: FRONTEND_URL
+  })
+)
 
 app.get('/', (req, res) => {
   fs.readFile(api, 'utf8', (err, data) => {

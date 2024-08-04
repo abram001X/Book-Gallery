@@ -3,6 +3,7 @@ import './App.css';
 import { BookGallery } from './components/BookGallery.jsx';
 import { Menu } from './components/Menu.jsx';
 import { Details } from './components/Details.jsx';
+const URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 function App() {
   const [book, setBook] = useState([]);
@@ -15,7 +16,7 @@ function App() {
   }, []);
 
   const fetchData = async () => {
-    const res = await fetch('http://localhost:3000');
+    const res = await fetch(URL);
     const data = await res.json();
     setBook(
       data.library.map((data) => ({

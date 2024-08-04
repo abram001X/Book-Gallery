@@ -4,7 +4,8 @@
   "description": "#Hay que arreglar el css #Colocarlo en modo responsive",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/index.js"
+    "dev": "nodemon server/index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "Abraham",
