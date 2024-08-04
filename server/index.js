@@ -1,10 +1,10 @@
-const express = require('express')
-const cors = require('cors')
-const path = require('path')
+import express  from 'express'
+import cors from 'cors' 
+import path  from 'path'
+import { PORT, FRONTEND_URL } from './config.js'
+import fs from 'node:fs'
 const app = express()
-const fs = require('node:fs')
-const { PORT, FRONTEND_URL } = require('./config')
-const api = path.join(__dirname, 'json', 'books.json')
+const api = path.join(process.cwd(), 'json', "books.json")
 
 app.use(
   cors({

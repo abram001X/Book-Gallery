@@ -84,7 +84,7 @@ export function Menu({
         <span>{bookNoAvailable}</span>
       </p>
       <br />
-      <b className="b-menu p-none">(Arrastra un libro)</b>
+      <b className="b-menu p-none">( Arrastra un libro )</b>
       <br />
       <div
         className={`book-read ${styleDrag ? 'active-drag' : ''}`}
