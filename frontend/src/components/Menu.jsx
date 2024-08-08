@@ -3,17 +3,15 @@
 import { IoBookOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import { IoMoonOutline } from 'react-icons/io5';
-import { LuBookDown } from 'react-icons/lu';
 import { FaRegStar } from 'react-icons/fa6';
 import { BsJournalBookmark } from 'react-icons/bs';
 // eslint-disable-next-line react/prop-types
 export function Menu({
   pageFilter,
   booksFilter,
-  bookAvailable,
   bookNoAvailable,
   handleSearch,
-  books,
+  bookFilter,
   bookLearn,
   drag,
   handleDrop
@@ -23,7 +21,6 @@ export function Menu({
     setPages(event);
   };
   const [styleDrag, setStyleDrag] = useState(false);
-
   return (
     <div className="menu">
       <h1  className='query-h1'>
@@ -72,11 +69,6 @@ export function Menu({
             <option value="Terror">Terror</option>
             <option value="Zombies">Zombies</option>
           </select>
-          <br />
-          <p >
-            <LuBookDown className="icon" /> Libros
-            disponibles : <span >{bookAvailable}</span>
-          </p>
         </section>
       </div>
       <p className="libros-leidos p-none">
@@ -98,15 +90,15 @@ export function Menu({
         }}
         onDragLeave={()=>setStyleDrag(false)}
       >
-        {books.map((book) => {
-          return book.bolean ? null : (
+        {bookFilter ? bookFilter.map((books) => {
+          return books.bolean ? null : (
             <img
-              src={book.cover}
-              onClick={() => bookLearn(book.ISBN)}
-              key={book.ISBN}
+              src={books.cover}
+              onClick={() => bookLearn(books.ISBN)}
+              key={books.ISBN}
             />
           );
-        })}
+        }): ''}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ function App() {
   const [drag, setDrag] = useState([]);
   const [infoBooks, setInfoBooks] = useState()
   const [exit, setExit] = useState(false)
+  const [bookFilter, setBookFilter] = useState()
   useEffect(() => {
     fetchData();
   }, []);
@@ -37,14 +38,14 @@ function App() {
 
   //Filtrar libros por paginas
   const pageFilter = (event) => {
-    setBooks(book.filter((book) => book.pages >= event));
+    setBooks(bookFilter.filter((book) => book.pages >= event));
   };
 
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
   const handleSearch = (event) => {
     setBooks(
-      book.filter((book) =>
+      bookFilter.filter((book) =>
         book.title.toLowerCase().startsWith(event.toLowerCase())
       )
     );
@@ -54,25 +55,37 @@ function App() {
     if (e.key == 'Books') {
       setBooks(JSON.parse(e.newValue));
     }
+    if(e.key == 'Book'){
+      setBookFilter(JSON.parse(e.newValue))
+    }
+    
   });
 
   //Guardar los valores en localStorage
   useEffect(() => {
     let data = window.localStorage.getItem('Books');
+    let dataFilter = window.localStorage.getItem('Book')
     if (data) {
        setBooks(JSON.parse(data));
+       setBook(JSON.parse(data))
+    }
+    if(dataFilter){
+      setBookFilter(JSON.parse(dataFilter))
     }
   }, []);
 
   useEffect(() => {
+    if(bookFilter){
+      window.localStorage.setItem('Book',JSON.stringify(bookFilter))
+    }
     if(books){
       window.localStorage.setItem('Books', JSON.stringify(books));
     }
     else {
       window.localStorage.setItem('Books', JSON.stringify(book));
     }
-  }, [books,book]);
-
+  }, [book,books,bookFilter]);
+  
   //contar cuantos true tienen los libros
   if (books){
     books.map((book) => {
@@ -81,23 +94,21 @@ function App() {
     } else {
       bookNoAvailable++;
     }
+  })
+}
+else{
+  book.map((books) => {
+    if (books.bolean) {
+      bookAvailable++;
+    } else {
+      bookNoAvailable++;
+    }
   });
 }
   // Detectar cuales libros están disponibles o no para leer
   const bookLearn = (selectedISBN) => {
-    
-    setBook(
-      book.map((book) => {
-        if (book.ISBN === selectedISBN) {
-          return book.bolean
-            ? { ...book, bolean: false }
-            : { ...book, bolean: true };
-        }
-        return { ...book };
-      })
-    );
-
-    setBooks(
+    if(books){
+      setBooks(
       books.map((book) => {
         if (book.ISBN === selectedISBN) {
           return book.bolean
@@ -107,12 +118,46 @@ function App() {
         return { ...book };
       })
     );
+    
+    setBookFilter(
+      books.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return book.bolean
+            ? { ...book, bolean: false }
+            : { ...book, bolean: true };
+        }
+        return { ...book };
+      })
+    );
+    }
+    
+      setBook(
+        book.map((books) => {
+          if (books.ISBN === selectedISBN) {
+            return books.bolean
+              ? { ...books, bolean: false }
+              : { ...books, bolean: true };
+          }
+          return { ...books };
+        })
+      );
+    if(!books){setBookFilter(
+      book.map((books) => {
+        if (books.ISBN === selectedISBN) {
+          return books.bolean
+            ? { ...books, bolean: false }
+            : { ...books, bolean: true };
+        }
+        return { ...books };
+      })
+    );}
+    
   };
   
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
     if (genre == 'Todos') {
-      return setBooks(book);
+      return setBooks(bookFilter);
     }
     setBooks(book.filter((book) => book.genre === genre));
   };
@@ -123,6 +168,14 @@ function App() {
   const handleDrop = (selectedISBN)=>{
     setBook(
       book.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return { ...book, bolean:false}
+        }
+        return { ...book };
+      })
+    );
+    setBookFilter(
+      bookFilter.map((book) => {
         if (book.ISBN === selectedISBN) {
           return { ...book, bolean:false}
         }
@@ -150,7 +203,7 @@ function App() {
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
         handleSearch={handleSearch}
-        books={books ? books : book}
+        bookFilter={bookFilter}
         bookLearn={bookLearn}
         drag={drag}
         handleDrop={handleDrop}
