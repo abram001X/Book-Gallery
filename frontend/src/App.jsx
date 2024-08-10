@@ -171,8 +171,12 @@ else{
         return { ...book };
       })
     );
-    setBookStorage(
-      bookStorage.map((book) => {
+    setBookStorage(bookStorage ? bookStorage.map((book) => {
+        if (book.ISBN === selectedISBN) {
+          return { ...book, bolean:false}
+        }
+        return { ...book };
+      }):book.map((book) => {
         if (book.ISBN === selectedISBN) {
           return { ...book, bolean:false}
         }
