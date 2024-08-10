@@ -15,6 +15,7 @@ body {
   display: grid;
   place-content: center;
   grid-template-columns: repeat(auto-fit, minmax(216px, 260px));
+  
 }
 .cont-books {
   display: flex;
@@ -23,9 +24,20 @@ body {
   width: 210px;
   margin: 0px 15px;
 }
+.img-gallery{
+  object-fit: cover;
+  width: 210px;
+  height: 300px;
+  transition: .3s;
+  z-index: 10;
+}
 .img-grid-item {
   width: 210px;
   height: 300px;
+  z-index: 10;
+}
+.img-gallery:hover{
+  transform: translateY(-10px);
 }
 .info-book {
   display: flex;
@@ -49,6 +61,7 @@ body {
   position: relative;
   transform: translateY(40px);
   color: #aa0080;
+  z-index: 100;
 }
 .cono:hover{
   cursor: pointer;

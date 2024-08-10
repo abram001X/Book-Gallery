@@ -11,7 +11,7 @@ export function Menu({
   booksFilter,
   bookNoAvailable,
   handleSearch,
-  bookFilter,
+  bookStorage,
   bookLearn,
   drag,
   handleDrop
@@ -21,6 +21,7 @@ export function Menu({
     setPages(event);
   };
   const [styleDrag, setStyleDrag] = useState(false);
+  
   return (
     <div className="menu">
       <h1  className='query-h1'>
@@ -90,7 +91,7 @@ export function Menu({
         }}
         onDragLeave={()=>setStyleDrag(false)}
       >
-        {bookFilter ? bookFilter.map((books) => {
+        {bookStorage ? bookStorage.map((books) => {
           return books.bolean ? null : (
             <img
               src={books.cover}

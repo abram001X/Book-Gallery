@@ -8,10 +8,11 @@ const URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 function App() {
   const [book, setBook] = useState([]);
   const [books, setBooks] = useState();
+  const [bookStorage, setBookStorage] = useState();
   const [drag, setDrag] = useState([]);
   const [infoBooks, setInfoBooks] = useState()
   const [exit, setExit] = useState(false)
-  const [bookFilter, setBookFilter] = useState()
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -38,25 +39,33 @@ function App() {
 
   //Filtrar libros por paginas
   const pageFilter = (event) => {
-    setBooks(bookFilter.filter((book) => book.pages >= event));
+    if(bookStorage){
+      setBooks(bookStorage.filter((book) => book.pages >= event));
+    }
+    else{
+      setBooks(book.filter((book) => book.pages >= event));
+    }
   };
 
   // Implementar una funcionalidad de búsqueda en la lista de libros disponibles
 
   const handleSearch = (event) => {
-    setBooks(
-      bookFilter.filter((book) =>
+    if(bookStorage){
+      setBooks(
+      bookStorage.filter((book) =>
         book.title.toLowerCase().startsWith(event.toLowerCase())
-      )
-    );
+      ));
+    }else{
+      setBooks(
+        book.filter((book) =>
+          book.title.toLowerCase().startsWith(event.toLowerCase())
+        ));
+    }
   };
   //Cambiar el localStorage para reflejarlo en otra pestaña al instante
   addEventListener('storage', (e) => {
     if (e.key == 'Books') {
       setBooks(JSON.parse(e.newValue));
-    }
-    if(e.key == 'Book'){
-      setBookFilter(JSON.parse(e.newValue))
     }
     
   });
@@ -64,31 +73,25 @@ function App() {
   //Guardar los valores en localStorage
   useEffect(() => {
     let data = window.localStorage.getItem('Books');
-    let dataFilter = window.localStorage.getItem('Book')
     if (data) {
-       setBooks(JSON.parse(data));
-       setBook(JSON.parse(data))
-    }
-    if(dataFilter){
-      setBookFilter(JSON.parse(dataFilter))
+      
+      setBooks(JSON.parse(data))
+      setBookStorage(JSON.parse(data))
     }
   }, []);
 
   useEffect(() => {
-    if(bookFilter){
-      window.localStorage.setItem('Book',JSON.stringify(bookFilter))
-    }
-    if(books){
-      window.localStorage.setItem('Books', JSON.stringify(books));
+    if(bookStorage){
+      window.localStorage.setItem('Books', JSON.stringify(bookStorage));
     }
     else {
       window.localStorage.setItem('Books', JSON.stringify(book));
     }
-  }, [book,books,bookFilter]);
+  }, [book,bookStorage]);
   
   //contar cuantos true tienen los libros
-  if (books){
-    books.map((book) => {
+  if (bookStorage){
+    bookStorage.map((book) => {
     if (book.bolean) {
       bookAvailable++;
     } else {
@@ -116,51 +119,45 @@ else{
             : { ...book, bolean: true };
         }
         return { ...book };
-      })
-    );
+      }))}
     
-    setBookFilter(
-      books.map((book) => {
-        if (book.ISBN === selectedISBN) {
-          return book.bolean
-            ? { ...book, bolean: false }
-            : { ...book, bolean: true };
-        }
-        return { ...book };
-      })
-    );
-    }
-    
-      setBook(
-        book.map((books) => {
-          if (books.ISBN === selectedISBN) {
-            return books.bolean
-              ? { ...books, bolean: false }
-              : { ...books, bolean: true };
+    setBook(
+        book.map((book) => {
+          if (book.ISBN === selectedISBN) {
+            return book.bolean
+              ? { ...book, bolean: false }
+              : { ...book, bolean: true };
           }
-          return { ...books };
+          return { ...book };
         })
-      );
-    if(!books){setBookFilter(
-      book.map((books) => {
-        if (books.ISBN === selectedISBN) {
-          return books.bolean
-            ? { ...books, bolean: false }
-            : { ...books, bolean: true };
-        }
-        return { ...books };
-      })
-    );}
+    );
+    setBookStorage(bookStorage? bookStorage.map((book) => {
+      if (book.ISBN === selectedISBN) {
+        return book.bolean
+          ? { ...book, bolean: false }
+          : { ...book, bolean: true };
+      }
+      return { ...book };
+    }): book.map((book) => {
+      if (book.ISBN === selectedISBN) {
+        return book.bolean
+          ? { ...book, bolean: false }
+          : { ...book, bolean: true };
+      }
+      return { ...book };
+    }))
     
-  };
+  }
   
   //Filtrar los libros, recorre books y tomar los libros que coincidan con los generos
   const booksFilter = (genre) => {
     if (genre == 'Todos') {
-      return setBooks(bookFilter);
+      return setBooks(bookStorage);
     }
     setBooks(book.filter((book) => book.genre === genre));
   };
+
+
   // drag and drop function
   const handleDrag = (selectedISBN)=>{
     setDrag(selectedISBN)
@@ -174,14 +171,15 @@ else{
         return { ...book };
       })
     );
-    setBookFilter(
-      bookFilter.map((book) => {
+    setBookStorage(
+      bookStorage.map((book) => {
         if (book.ISBN === selectedISBN) {
           return { ...book, bolean:false}
         }
         return { ...book };
       })
     );
+    
     setBooks(
       books.map((book) => {
         if (book.ISBN === selectedISBN) {
@@ -203,7 +201,7 @@ else{
         bookAvailable={bookAvailable}
         bookNoAvailable={bookNoAvailable}
         handleSearch={handleSearch}
-        bookFilter={bookFilter}
+        bookStorage={bookStorage}
         bookLearn={bookLearn}
         drag={drag}
         handleDrop={handleDrop}
