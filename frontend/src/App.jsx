@@ -21,17 +21,11 @@ function App() {
     const res = await fetch(URL);
     const data = await res.json();
     setBook(
-      data.library.map((data) => ({
-        title: data.book.title,
-        pages: data.book.pages,
-        genre: data.book.genre,
-        cover: data.book.cover,
-        synopsis: data.book.synopsis,
-        year: data.book.year,
-        ISBN: data.book.ISBN,
-        author: data.book.author,
-        bolean: true
-      }))
+      data.library.map((data) => {
+        return { ...data.book,bolean: true }
+      }
+        
+      )
     );
   };
   let bookAvailable = 0;
